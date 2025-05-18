@@ -452,6 +452,8 @@ void GC9A01ACUSTOMDisplay::data(uint8_t value) {
 
 void GC9A01ACUSTOMDisplay::send_command(uint8_t command_byte, const uint8_t *data_bytes, uint8_t num_data_bytes) {
   this->command(command_byte);  // Send the command byte
+  ESP_LOGI(TAG, "send_command() CMD=0x%02X, LEN=%d", command_byte, num_data_bytes);
+
   this->start_data_();
   this->write_array(data_bytes, num_data_bytes);
   this->end_data_();
@@ -479,18 +481,24 @@ void GC9A01ACUSTOMDisplay::reset_() {
 }
 
 void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
-  if (addr == nullptr)
+  ESP_LOGI(TAG, ">>> init_lcd_() called");
+  if (addr == nullptr) {
+    ESP_LOGE(TAG, "init_lcd_() called with null addr");
     return;
+  }
+
+  // if (addr == nullptr)
+  //   return;
   uint8_t cmd, x, num_args;
   while ((cmd = *addr++) != 0) {
     x = *addr++;
     if (x == GC9A01ACUSTOM_DELAY_FLAG) {
       cmd &= 0x7F;
-      ESP_LOGV(TAG, "Delay %dms", cmd);
+      ESP_LOGI(TAG, "Delay %dms", cmd);
       delay(cmd);
     } else {
       num_args = x & 0x7F;
-      ESP_LOGV(TAG, "Command %02X, length %d, bits %02X", cmd, num_args, *addr);
+      ESP_LOGI(TAG, "Command %02X, length %d, bits %02X", cmd, num_args, *addr);
       this->send_command(cmd, addr, num_args);
       addr += num_args;
       if (x & 0x80) {
@@ -504,7 +512,7 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
 // Custom methods
 void GC9A01ACUSTOMDisplay::dump_debug_info() {
   this->dump_config();
-  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V11 ===");
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V12 ===");
   ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
   ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
   // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
