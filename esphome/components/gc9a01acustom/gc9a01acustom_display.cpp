@@ -4,6 +4,8 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
 
+// #include "esp_heap_caps.h"  // add to top of file if not present
+
 namespace esphome {
 namespace gc9a01acustom {
 
@@ -65,13 +67,25 @@ void GC9A01ACUSTOMDisplay::setup() {
   this->y_high_ = 0;
 }
 
+// void GC9A01ACUSTOMDisplay::alloc_buffer_() {
+//   if (this->buffer_color_mode_ == BITS_16) {
+//     this->init_internal_(this->get_buffer_length_() * 2);
+//   } else {
+//     this->init_internal_(this->get_buffer_length_());
+//   }
+//   if (this->buffer_ == nullptr) {
+//     this->mark_failed();
+//   }
+// }
+
 void GC9A01ACUSTOMDisplay::alloc_buffer_() {
-  if (this->buffer_color_mode_ == BITS_16) {
-    this->init_internal_(this->get_buffer_length_() * 2);
-  } else {
-    this->init_internal_(this->get_buffer_length_());
-  }
+  size_t buf_len = (this->buffer_color_mode_ == BITS_16)
+                     ? this->get_buffer_length_() * 2
+                     : this->get_buffer_length_();
+
+  this->buffer_ = static_cast<uint8_t *>(malloc(buf_len));
   if (this->buffer_ == nullptr) {
+    ESP_LOGE(TAG, "malloc failed");
     this->mark_failed();
   }
 }
