@@ -428,6 +428,17 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
   }
 }
 
+// Custom methods
+void GC9A01ACUSTOMDisplay::dump_debug_info() {
+  this->dump_config();
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V3 ===");
+  ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
+  ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
+  // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
+  // Add any other internal state you want to inspect
+}
+
+
 // Tell the display controller where we want to draw pixels.
 void GC9A01ACUSTOMDisplay::set_addr_window_(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
   x1 += this->offset_x_;

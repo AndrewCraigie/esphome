@@ -91,9 +91,15 @@ class GC9A01ACUSTOMDisplay : public display::DisplayBuffer,
   void setup() override;
   void on_shutdown() override { this->command(GC9A01ACUSTOM_SLPIN); }
 
+// Method to be called by button press in Home Assistant
+  void dump_debug_info();
+
+
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_COLOR; }
   void draw_pixels_at(int x_start, int y_start, int w, int h, const uint8_t *ptr, display::ColorOrder order,
                       display::ColorBitness bitness, bool big_endian, int x_offset, int y_offset, int x_pad) override;
+
+          
 
  protected:
   inline bool check_buffer_() {
