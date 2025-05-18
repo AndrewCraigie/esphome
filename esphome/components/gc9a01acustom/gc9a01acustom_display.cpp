@@ -34,6 +34,7 @@ void GC9A01ACUSTOMDisplay::setup() {
   ESP_LOGD(TAG, "Setting up GC9A01ACUSTOM display");
 
   this->setup_pins_();
+  this->alloc_buffer_();
   this->init_lcd_(this->init_sequence_);
   this->init_lcd_(this->extra_init_sequence_.data());
   switch (this->pixel_mode_) {
