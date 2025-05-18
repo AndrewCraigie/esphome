@@ -438,12 +438,14 @@ uint32_t GC9A01ACUSTOMDisplay::get_buffer_length_() { return this->get_width_int
 
 void GC9A01ACUSTOMDisplay::command(uint8_t value) {
   this->start_command_();
+  ESP_LOGI(TAG, "[SPI CMD] 0x%02X", value);
   this->write_byte(value);
   this->end_command_();
 }
 
 void GC9A01ACUSTOMDisplay::data(uint8_t value) {
   this->start_data_();
+  ESP_LOGI(TAG, "[SPI DATA] 0x%02X", value);
   this->write_byte(value);
   this->end_data_();
 }
@@ -502,7 +504,7 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
 // Custom methods
 void GC9A01ACUSTOMDisplay::dump_debug_info() {
   this->dump_config();
-  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V9 ===");
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V11 ===");
   ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
   ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
   // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
