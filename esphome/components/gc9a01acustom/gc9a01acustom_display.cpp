@@ -445,7 +445,7 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
 // Custom methods
 void GC9A01ACUSTOMDisplay::dump_debug_info() {
   this->dump_config();
-  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V3 ===");
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V4 ===");
   ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
   ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
   // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
