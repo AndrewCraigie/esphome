@@ -32,6 +32,7 @@ void GC9A01ACUSTOMDisplay::set_madctl() {
 
 void GC9A01ACUSTOMDisplay::setup() {
   ESP_LOGD(TAG, "Setting up GC9A01ACUSTOM display");
+  ESP_LOGI(TAG, "Inside setup for GC9A01ACUSTOM display");
 
   this->setup_pins_();
   this->alloc_buffer_();
