@@ -261,6 +261,10 @@ void GC9A01ACUSTOMDisplay::update() {
 }
 
 void GC9A01ACUSTOMDisplay::display_() {
+
+  ESP_LOGI(TAG, ">>> display_() called: writing buffer to display");
+
+
   // check if something was displayed
   if ((this->x_high_ < this->x_low_) || (this->y_high_ < this->y_low_)) {
     return;
@@ -471,7 +475,7 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
 // Custom methods
 void GC9A01ACUSTOMDisplay::dump_debug_info() {
   this->dump_config();
-  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V7 ===");
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V8 ===");
   ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
   ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
   // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
