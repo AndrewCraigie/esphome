@@ -5,6 +5,10 @@
 #include "esphome/core/log.h"
 
 // #include "esp_heap_caps.h"  // add to top of file if not present
+// Manual shim for heap_caps_malloc
+extern "C" void* heap_caps_malloc(size_t size, uint32_t caps);
+#define MALLOC_CAP_DMA      (1<<1)
+#define MALLOC_CAP_INTERNAL (1<<2)
 
 namespace esphome {
 namespace gc9a01acustom {
@@ -78,17 +82,33 @@ void GC9A01ACUSTOMDisplay::setup() {
 //   }
 // }
 
+// void GC9A01ACUSTOMDisplay::alloc_buffer_() {
+//   size_t buf_len = (this->buffer_color_mode_ == BITS_16)
+//                      ? this->get_buffer_length_() * 2
+//                      : this->get_buffer_length_();
+
+//   this->buffer_ = static_cast<uint8_t *>(malloc(buf_len));
+//   if (this->buffer_ == nullptr) {
+//     ESP_LOGE(TAG, "malloc failed");
+//     this->mark_failed();
+//   }
+// }
+
 void GC9A01ACUSTOMDisplay::alloc_buffer_() {
   size_t buf_len = (this->buffer_color_mode_ == BITS_16)
                      ? this->get_buffer_length_() * 2
                      : this->get_buffer_length_();
 
-  this->buffer_ = static_cast<uint8_t *>(malloc(buf_len));
+  this->buffer_ = static_cast<uint8_t *>(
+      heap_caps_malloc(buf_len, MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL));
   if (this->buffer_ == nullptr) {
-    ESP_LOGE(TAG, "malloc failed");
+    ESP_LOGE(TAG, "heap_caps_malloc failed — cannot allocate DMA-capable buffer");
     this->mark_failed();
+  } else {
+    ESP_LOGI(TAG, "Allocated DMA-capable buffer at %p (%u bytes)", this->buffer_, buf_len);
   }
 }
+
 
 void GC9A01ACUSTOMDisplay::setup_pins_() {
   this->dc_pin_->setup();  // OUTPUT
@@ -451,7 +471,7 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
 // Custom methods
 void GC9A01ACUSTOMDisplay::dump_debug_info() {
   this->dump_config();
-  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V5 ===");
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V6 ===");
   ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
   ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
   // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
