@@ -61,12 +61,39 @@ void GC9A01ACUSTOMDisplay::setup() {
       break;
   }
 
+  // Raw SPI write test
   this->set_madctl();
   this->command(this->pre_invertcolors_ ? GC9A01ACUSTOM_INVON : GC9A01ACUSTOM_INVOFF);
   this->x_low_ = this->width_;
   this->y_low_ = this->height_;
   this->x_high_ = 0;
   this->y_high_ = 0;
+
+  ESP_LOGI(TAG, "Running raw SPI write test...");
+
+  this->command(GC9A01ACUSTOM_SLPOUT);
+  delay(120);
+  this->command(GC9A01ACUSTOM_DISPON);
+  delay(120);
+
+  this->command(GC9A01ACUSTOM_CASET);
+  this->data(0x00); this->data(0x00);        // X START
+  this->data(0x00); this->data(239);         // X END
+
+  this->command(GC9A01ACUSTOM_PASET);
+  this->data(0x00); this->data(0x00);        // Y START
+  this->data(0x00); this->data(239);         // Y END
+
+  this->command(GC9A01ACUSTOM_RAMWR);
+  this->start_data_();
+
+  for (int i = 0; i < 240 * 240; i++) {
+    this->write_byte(0xFF);  // White high byte
+    this->write_byte(0xFF);  // White low byte
+  }
+
+  this->end_data_();
+  ESP_LOGI(TAG, "Raw SPI write test done");
 }
 
 // void GC9A01ACUSTOMDisplay::alloc_buffer_() {
@@ -475,7 +502,7 @@ void GC9A01ACUSTOMDisplay::init_lcd_(const uint8_t *addr) {
 // Custom methods
 void GC9A01ACUSTOMDisplay::dump_debug_info() {
   this->dump_config();
-  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V8 ===");
+  ESP_LOGI(TAG, "=== GC9A01ACUSTOM Display Debug Info V9 ===");
   ESP_LOGI(TAG, "Dimensions: %dx%d", this->width_, this->height_);
   ESP_LOGI(TAG, "Color mode: %d", this->buffer_color_mode_);
   // ESP_LOGI(TAG, "Update interval: %u ms", this->get_update_interval().value_or(0));
