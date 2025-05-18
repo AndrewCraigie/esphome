@@ -142,8 +142,14 @@ void GC9A01ACUSTOMDisplay::dump_config() {
 float GC9A01ACUSTOMDisplay::get_setup_priority() const { return setup_priority::HARDWARE; }
 
 void GC9A01ACUSTOMDisplay::fill(Color color) {
-  if (!this->check_buffer_())
+  ESP_LOGI(TAG, "fill() called with color: R=%d G=%d B=%d", color.r, color.g, color.b);
+
+
+  if (!this->check_buffer_()){
+    ESP_LOGE(TAG, "Buffer not allocated, cannot fill");
     return;
+  }
+   
   uint16_t new_color = 0;
   this->x_low_ = 0;
   this->y_low_ = 0;
