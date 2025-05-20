@@ -21,5 +21,10 @@ void GC9A01ACUSTOMDisplay::dump_config() {
   ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:");
 }
 
+void GC9A01ACUSTOMDisplay::draw_absolute_pixel_internal(int x, int y, Color color) {
+  // Stub implementation - replace with real drawing logic
+}
+
+
 }  // namespace gc9a01acustom
 }  // namespace esphome
