@@ -5,8 +5,10 @@
 namespace esphome {
 namespace gc9a01acustom {
 
+static const char *const TAG = "gc9a01acustom";
+
 void GC9A01ACUSTOMDisplay::setup() {
-  ESP_LOGI("custom_1in28_display", "Initializing display...");
+  ESP_LOGCONFIG(TAG, "Setting up GC9A01ACUSTOM display...");
   LCD_1IN28_Init(HORIZONTAL);
   LCD_1IN28_Clear(0x07E0);  // GREEN in RGB565
 }
@@ -16,7 +18,7 @@ void GC9A01ACUSTOMDisplay::update() {
 }
 
 void GC9A01ACUSTOMDisplay::dump_config() {
-  ESP_LOGCONFIG("custom_1in28_display", "Custom 1.28 inch display");
+  ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:");
 }
 
 }  // namespace gc9a01acustom
