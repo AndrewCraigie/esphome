@@ -18,11 +18,6 @@ class GC9A01ACUSTOMDisplay : public display::DisplayBuffer, public Component {
   int get_height_internal() override { return 240; }
 };
 
-class GC9A01ACustom240TFT : public GC9A01ACUSTOMDisplay {
- public:
-  GC9A01ACustom240TFT() : GC9A01ACUSTOMDisplay() {}
-};
-
 }  // namespace gc9a01acustom
 }  // namespace esphome
 
