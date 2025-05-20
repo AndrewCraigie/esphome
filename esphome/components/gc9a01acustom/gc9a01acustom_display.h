@@ -35,6 +35,9 @@ class GC9A01ACUSTOMDisplay : public display::DisplayBuffer {
   void set_buffer_color_mode(GC9A01ACUSTOMColorMode color_mode) { this->buffer_color_mode_ = color_mode; }
   void invert_colors(bool invert) {}
 
+  void draw_absolute_pixel_internal(int x, int y, Color color) override;
+
+
   protected:
   GC9A01ACUSTOMColorMode buffer_color_mode_{BITS_16};
 };
