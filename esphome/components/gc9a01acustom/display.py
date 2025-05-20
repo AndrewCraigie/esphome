@@ -56,7 +56,7 @@ GC9A01ACUSTOMColorMode = gc9a01acustom_ns.enum("GC9A01ACUSTOMColorMode")
 ColorOrder = display.display_ns.enum("ColorMode")
 
 MODELS = {
-    "GC9A01ACUSTOM": gc9a01acustom_ns.class_("GC9A01ACUSTOM", GC9A01ACUSTOMDisplay),
+    "GC9A01ACUSTOM": gc9a01acustom_ns.class_("GC9A01ACUSTOMDisplay", GC9A01ACUSTOMDisplay),
     "CUSTOM": GC9A01ACUSTOMDisplay,
 }
 
