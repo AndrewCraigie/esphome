@@ -30,7 +30,7 @@ void GC9A01ACUSTOMDisplay::setup() {
   ESP_LOGD(TAG, "DEV_Module_Init succeeded");
 
   LCD_1IN28_Init(HORIZONTAL);
-  // Paint_NewImage(reinterpret_cast<UBYTE *>(this->framebuffer_), LCD_1IN28.WIDTH, LCD_1IN28.HEIGHT, 0, WHITE);
+  Paint_NewImage(reinterpret_cast<UBYTE *>(this->framebuffer_), LCD_1IN28.WIDTH, LCD_1IN28.HEIGHT, 0, WHITE);
   // Paint_SetScale(65);
   // Paint_SetRotate(ROTATE_0);
   // Paint_Clear(WHITE);
