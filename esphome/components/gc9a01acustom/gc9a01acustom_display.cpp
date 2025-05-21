@@ -30,7 +30,20 @@ void GC9A01ACUSTOMDisplay::setup() {
 }
 
 void GC9A01ACUSTOMDisplay::update() {
-  // Implement display update logic here
+  static uint32_t update_counter = 0;
+
+  if (this->framebuffer_ == nullptr) {
+    if (update_counter % 30 == 0) {  // Log only every 30th update (~30 seconds if 1 Hz)
+      ESP_LOGW(TAG, "Display update skipped: framebuffer not allocated");
+    }
+    update_counter++;
+    return;
+  }
+
+  if (update_counter % 30 == 0) {
+    ESP_LOGD(TAG, "Display update running: framebuffer OK at %p", this->framebuffer_);
+  }
+  update_counter++;
 }
 
 void GC9A01ACUSTOMDisplay::dump_config() {
