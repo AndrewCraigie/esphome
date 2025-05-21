@@ -20,6 +20,13 @@ void GC9A01ACUSTOMDisplay::setup() {
     return;
   }
 
+  if (DEV_Module_Init() != 0) {
+    ESP_LOGE(TAG, "DEV_Module_Init failed");
+    this->mark_failed();
+    return;
+  }
+  ESP_LOGD(TAG, "DEV_Module_Init succeeded");
+
   LCD_1IN28_Init(HORIZONTAL);
   // Paint_NewImage(reinterpret_cast<UBYTE *>(this->framebuffer_), LCD_1IN28.WIDTH, LCD_1IN28.HEIGHT, 0, WHITE);
   // Paint_SetScale(65);
@@ -46,14 +53,11 @@ void GC9A01ACUSTOMDisplay::update() {
   update_counter++;
 }
 
-void GC9A01ACUSTOMDisplay::dump_config() {
-  ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:");
-}
+void GC9A01ACUSTOMDisplay::dump_config() { ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:"); }
 
 void GC9A01ACUSTOMDisplay::draw_absolute_pixel_internal(int x, int y, Color color) {
   // Stub implementation - replace with real drawing logic
 }
-
 
 }  // namespace gc9a01acustom
 }  // namespace esphome
