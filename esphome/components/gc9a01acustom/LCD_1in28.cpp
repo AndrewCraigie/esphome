@@ -343,7 +343,7 @@ static void LCD_1IN28_SetAttributes(UBYTE Scan_dir)
     // Set the read / write scan direction of the frame memory
     LCD_1IN28_SendCommand(0x36); //MX, MY, RGB mode
     //LCD_1IN28_SendData_8Bit(MemoryAccessReg);	//0x08 set RGB
-	LCD_1IN28_SendData_8Bit(MemoryAccessReg);	//0x08 set RGB
+	// LCD_1IN28_SendData_8Bit(MemoryAccessReg);	//0x08 set RGB
 }
 
 /********************************************************************************
