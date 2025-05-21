@@ -42,7 +42,7 @@ void GC9A01ACUSTOMDisplay::update() {
   static uint32_t update_counter = 0;
 
   if (this->framebuffer_ == nullptr) {
-    if (update_counter % 30 == 0) {  // Log every 30th update (~30s if 1 Hz)
+    if (update_counter % 30 == 0) {
       ESP_LOGW(TAG, "Display update skipped: framebuffer not allocated");
     }
     update_counter++;
@@ -52,20 +52,29 @@ void GC9A01ACUSTOMDisplay::update() {
   if (update_counter % 30 == 0) {
     ESP_LOGD(TAG, "Display update running: framebuffer OK at %p", this->framebuffer_);
 
-    if (vspi == nullptr) {
-      ESP_LOGW(TAG, "SPI not initialized (vspi is nullptr)");
-    } else {
+    // SPI diagnostics
+    if (vspi != nullptr) {
       ESP_LOGD(TAG, "SPI bus active, vspi is valid at %p", vspi);
-
-      // Optional: test a SPI transfer
       uint8_t test_byte = 0xAA;
-      uint8_t result = vspi->transfer(test_byte);
-      ESP_LOGD(TAG, "SPI test transfer: wrote 0x%02X, read back 0x%02X", test_byte, result);
+      uint8_t response = vspi->transfer(test_byte);
+      ESP_LOGD(TAG, "SPI test transfer: wrote 0x%02X, read back 0x%02X", test_byte, response);
+    } else {
+      ESP_LOGW(TAG, "SPI bus is not initialized");
+    }
+
+    // I2C diagnostics
+    Wire.beginTransmission(0x00);  // Use an address unlikely to ACK
+    uint8_t error = Wire.endTransmission();
+    if (error == 0x00 || error == 0x02 || error == 0x03) {
+      ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", error);
+    } else {
+      ESP_LOGW(TAG, "I2C bus possibly uninitialized: endTransmission returned %d", error);
     }
   }
 
   update_counter++;
 }
+
 
 void GC9A01ACUSTOMDisplay::dump_config() { ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:"); }
 
