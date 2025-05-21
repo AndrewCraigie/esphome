@@ -395,23 +395,20 @@ void LCD_1IN28_SetWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)
 function :	Clear screen
 parameter:
 ******************************************************************************/
-extern UWORD *BlackImage;
-void LCD_1IN28_Clear(UWORD Color)
+void LCD_1IN28_Clear(UWORD *Image, UWORD Color)
 {
     UWORD j;
-    UWORD *Image = NULL;
-    Image = BlackImage;
 
-    Color = ((Color<<8)&0xff00)|(Color>>8);
+    Color = ((Color << 8) & 0xff00) | (Color >> 8);
 
-    for (j = 0; j < LCD_1IN28_HEIGHT*LCD_1IN28_WIDTH; j++) {
+    for (j = 0; j < LCD_1IN28_HEIGHT * LCD_1IN28_WIDTH; j++) {
         Image[j] = Color;
     }
-    
+
     LCD_1IN28_SetWindows(0, 0, LCD_1IN28_WIDTH, LCD_1IN28_HEIGHT);
     DEV_Digital_Write(LCD_DC_PIN, 1);
-    for(j = 0; j < LCD_1IN28_HEIGHT; j++){
-        DEV_SPI_Write_nByte((uint8_t *)&Image[j*LCD_1IN28_WIDTH], LCD_1IN28_WIDTH*2);
+    for (j = 0; j < LCD_1IN28_HEIGHT; j++) {
+        DEV_SPI_Write_nByte((uint8_t *)&Image[j * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
     }
 }
 
