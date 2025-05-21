@@ -45,4 +45,6 @@ void LCD_1IN28_Clear(UWORD *Image, UWORD Color);
 void LCD_1IN28_Display(UWORD *Image);
 void LCD_1IN28_DisplayWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD *Image);
 void LCD_1IN28_DisplayPoint(UWORD X, UWORD Y, UWORD Color);
+void LCD_1IN28_SetWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend);
+
 #endif
