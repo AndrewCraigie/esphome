@@ -44,7 +44,7 @@ static void LCD_1IN28_SendCommand(UBYTE Reg)
 {
     DEV_Digital_Write(LCD_DC_PIN, 0);
     //DEV_Digital_Write(LCD_CS_PIN, 0);
-    DEV_SPI_WriteByte(Reg);
+    // DEV_SPI_WriteByte(Reg);
     //DEV_Digital_Write(LCD_CS_PIN, 1);
 }
 
