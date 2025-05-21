@@ -357,8 +357,8 @@ void LCD_1IN28_Init(UBYTE Scan_dir)
     //Hardware reset
     LCD_1IN28_Reset();
 
-    // //Set the resolution and scanning method of the screen
-    // LCD_1IN28_SetAttributes(Scan_dir);
+    //Set the resolution and scanning method of the screen
+    LCD_1IN28_SetAttributes(Scan_dir);
     
     // //Set the initialization register
     // LCD_1IN28_InitReg();
