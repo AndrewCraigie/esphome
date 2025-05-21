@@ -81,25 +81,22 @@ void GC9A01ACUSTOMDisplay::update() {
   static uint32_t update_counter = 0;
   static bool diag_run = false;
 
-  if (this->framebuffer_ == nullptr) {
-    if (update_counter % 30 == 0) {
+  // Logging that happens every 30 updates
+  if (update_counter % 30 == 0) {
+    if (this->framebuffer_ == nullptr) {
       ESP_LOGW(TAG, "Display update skipped: framebuffer not allocated");
     }
-    update_counter++;
-    return;
-  }
 
-  if (update_counter % 30 == 0) {
     ESP_LOGD(TAG, "Display update running: framebuffer OK at %p", this->framebuffer_);
+
+    if (vspi != nullptr) {
+      ESP_LOGD(TAG, "SPI bus active, vspi is valid at %p", vspi);
+      // uint8_t test = vspi->transfer(0xAA);
+      // ESP_LOGD(TAG, "SPI test transfer: wrote 0xAA, read back 0x%02X", test);
+    }
   }
 
-  // SPI and I2C sanity checks (repeat every update)
-  if (vspi != nullptr) {
-    ESP_LOGD(TAG, "SPI bus active, vspi is valid at %p", vspi);
-    uint8_t test = vspi->transfer(0xAA);
-    ESP_LOGD(TAG, "SPI test transfer: wrote 0xAA, read back 0x%02X", test);
-  }
-
+  // Logging that happens once after 30 update delay
   Wire.beginTransmission(0x3C);
   uint8_t err = Wire.endTransmission();
   ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
@@ -118,7 +115,7 @@ void GC9A01ACUSTOMDisplay::update() {
     ESP_LOGD(TAG, "LCD_DC set to data mode (1)");
 
     int y = 0;
-    DEV_SPI_Write_nByte((uint8_t *)&this->framebuffer_[y * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
+    DEV_SPI_Write_nByte((uint8_t *) &this->framebuffer_[y * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
     ESP_LOGD(TAG, "Transmitted scanline %d", y);
 
     diag_run = true;
@@ -126,9 +123,6 @@ void GC9A01ACUSTOMDisplay::update() {
 
   update_counter++;
 }
-
-
-
 
 void GC9A01ACUSTOMDisplay::dump_config() { ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:"); }
 
