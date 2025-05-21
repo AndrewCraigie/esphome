@@ -11,6 +11,9 @@ namespace gc9a01acustom {
 
 static const char *const TAG = "gc9a01acustom";
 
+const UWORD color_wheel[] = {RED, BRED, MAGENTA, BLUE, GBLUE, CYAN, GREEN, GRED, YELLOW, BRRED, BROWN};
+const int color_count = sizeof(color_wheel) / sizeof(color_wheel[0]);
+
 void GC9A01ACUSTOMDisplay::setup() {
   ESP_LOGCONFIG(TAG, "Setting up GC9A01ACUSTOM display...");
 
@@ -79,52 +82,65 @@ void GC9A01ACUSTOMDisplay::setup() {
 
 void GC9A01ACUSTOMDisplay::update() {
   static uint32_t update_counter = 0;
-  static bool diag_run = false;
+  static uint8_t color_index = 0;
 
-  // Logging that happens every 30 updates
-  if (update_counter % 30 == 0) {
-    if (this->framebuffer_ == nullptr) {
-      ESP_LOGW(TAG, "Display update skipped: framebuffer not allocated");
-    }
-
-    ESP_LOGD(TAG, "Display update running: framebuffer OK at %p", this->framebuffer_);
-
-    if (vspi != nullptr) {
-      ESP_LOGD(TAG, "SPI bus active, vspi is valid at %p", vspi);
-      // uint8_t test = vspi->transfer(0xAA);
-      // ESP_LOGD(TAG, "SPI test transfer: wrote 0xAA, read back 0x%02X", test);
-    }
-
-    // Wire.beginTransmission(0x3C);
-    // uint8_t err = Wire.endTransmission();
-    // ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
-      
-  }
-
-  // Logging that happens once after 30 update delay
-  if (!diag_run && update_counter >= 30) {
-    LCD_1IN28_Clear(this->framebuffer_, GREEN);
-
-  //   for (int i = 0; i < LCD_1IN28_HEIGHT * LCD_1IN28_WIDTH; i++) {
-  //     this->framebuffer_[i] = 0xFFFF;
-  //   }
-  //   ESP_LOGD(TAG, "Frame buffer manually filled with WHITE (0xFFFF)");
-
-  //   LCD_1IN28_SetWindows(0, 0, LCD_1IN28_WIDTH, LCD_1IN28_HEIGHT);
-  //   ESP_LOGD(TAG, "Set window to full screen");
-
-  //   DEV_Digital_Write(LCD_DC_PIN, 1);
-  //   ESP_LOGD(TAG, "LCD_DC set to data mode (1)");
-
-  //   int y = 0;
-  //   DEV_SPI_Write_nByte((uint8_t *) &this->framebuffer_[y * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
-  //   ESP_LOGD(TAG, "Transmitted scanline %d", y);
-
-  //   diag_run = true;
+  if (update_counter % 5 == 0) {  // Every 5 seconds (assuming update_interval: 1s)
+    LCD_1IN28_Clear(this->framebuffer_, color_wheel[color_index]);
+    ESP_LOGD(TAG, "LCD cleared to color index %d (0x%04X)", color_index, color_wheel[color_index]);
+    color_index = (color_index + 1) % color_count;
   }
 
   update_counter++;
 }
+
+// void GC9A01ACUSTOMDisplay::update() {
+//   static uint32_t update_counter = 0;
+//   static bool diag_run = false;
+
+//   // Logging that happens every 30 updates
+//   if (update_counter % 30 == 0) {
+//     if (this->framebuffer_ == nullptr) {
+//       ESP_LOGW(TAG, "Display update skipped: framebuffer not allocated");
+//     }
+
+//     ESP_LOGD(TAG, "Display update running: framebuffer OK at %p", this->framebuffer_);
+
+//     if (vspi != nullptr) {
+//       ESP_LOGD(TAG, "SPI bus active, vspi is valid at %p", vspi);
+//       // uint8_t test = vspi->transfer(0xAA);
+//       // ESP_LOGD(TAG, "SPI test transfer: wrote 0xAA, read back 0x%02X", test);
+//     }
+
+//     // Wire.beginTransmission(0x3C);
+//     // uint8_t err = Wire.endTransmission();
+//     // ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
+
+//   }
+
+//   // Logging that happens once after 30 update delay
+//   if (!diag_run && update_counter >= 30) {
+//     LCD_1IN28_Clear(this->framebuffer_, GREEN);
+
+//   //   for (int i = 0; i < LCD_1IN28_HEIGHT * LCD_1IN28_WIDTH; i++) {
+//   //     this->framebuffer_[i] = 0xFFFF;
+//   //   }
+//   //   ESP_LOGD(TAG, "Frame buffer manually filled with WHITE (0xFFFF)");
+
+//   //   LCD_1IN28_SetWindows(0, 0, LCD_1IN28_WIDTH, LCD_1IN28_HEIGHT);
+//   //   ESP_LOGD(TAG, "Set window to full screen");
+
+//   //   DEV_Digital_Write(LCD_DC_PIN, 1);
+//   //   ESP_LOGD(TAG, "LCD_DC set to data mode (1)");
+
+//   //   int y = 0;
+//   //   DEV_SPI_Write_nByte((uint8_t *) &this->framebuffer_[y * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
+//   //   ESP_LOGD(TAG, "Transmitted scanline %d", y);
+
+//   //   diag_run = true;
+//   }
+
+//   update_counter++;
+// }
 
 void GC9A01ACUSTOMDisplay::dump_config() { ESP_LOGCONFIG(TAG, "GC9A01ACUSTOM display configuration:"); }
 
