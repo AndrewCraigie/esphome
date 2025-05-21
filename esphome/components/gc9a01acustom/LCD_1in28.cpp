@@ -361,7 +361,7 @@ void LCD_1IN28_Init(UBYTE Scan_dir)
     LCD_1IN28_SetAttributes(Scan_dir);
     
     // //Set the initialization register
-    // LCD_1IN28_InitReg();
+    LCD_1IN28_InitReg();
 }
 
 /********************************************************************************
