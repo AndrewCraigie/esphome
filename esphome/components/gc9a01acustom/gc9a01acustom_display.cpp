@@ -26,7 +26,7 @@ void GC9A01ACUSTOMDisplay::setup() {
   Paint_SetRotate(ROTATE_0);
   Paint_Clear(WHITE);
 
-  LCD_1IN28_Clear(this->framebuffer_, 0x07E0);  // GREEN
+  // LCD_1IN28_Clear(this->framebuffer_, 0x07E0);  // GREEN
 }
 
 void GC9A01ACUSTOMDisplay::update() {
