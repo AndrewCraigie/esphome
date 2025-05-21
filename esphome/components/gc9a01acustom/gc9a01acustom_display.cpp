@@ -94,14 +94,13 @@ void GC9A01ACUSTOMDisplay::update() {
       // uint8_t test = vspi->transfer(0xAA);
       // ESP_LOGD(TAG, "SPI test transfer: wrote 0xAA, read back 0x%02X", test);
     }
+
+    Wire.beginTransmission(0x3C);
+    uint8_t err = Wire.endTransmission();
+    ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
   }
 
   // Logging that happens once after 30 update delay
-  Wire.beginTransmission(0x3C);
-  uint8_t err = Wire.endTransmission();
-  ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
-
-  // Wait 30 seconds before running one-time diagnostic
   if (!diag_run && update_counter >= 30) {
     for (int i = 0; i < LCD_1IN28_HEIGHT * LCD_1IN28_WIDTH; i++) {
       this->framebuffer_[i] = 0xFFFF;
