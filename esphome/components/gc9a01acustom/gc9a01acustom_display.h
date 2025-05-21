@@ -40,6 +40,8 @@ class GC9A01ACUSTOMDisplay : public display::DisplayBuffer {
 
   protected:
   GC9A01ACUSTOMColorMode buffer_color_mode_{BITS_16};
+  uint16_t *framebuffer_{nullptr};
+  size_t image_size_{0};
 };
 
 }  // namespace gc9a01acustom
