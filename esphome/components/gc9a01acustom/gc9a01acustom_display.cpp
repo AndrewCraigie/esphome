@@ -95,9 +95,9 @@ void GC9A01ACUSTOMDisplay::update() {
       // ESP_LOGD(TAG, "SPI test transfer: wrote 0xAA, read back 0x%02X", test);
     }
 
-    Wire.beginTransmission(0x3C);
-    uint8_t err = Wire.endTransmission();
-    ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
+    // Wire.beginTransmission(0x3C);
+    // uint8_t err = Wire.endTransmission();
+    // ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
   }
 
   // Logging that happens once after 30 update delay
