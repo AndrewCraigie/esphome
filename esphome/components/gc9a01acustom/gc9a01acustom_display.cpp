@@ -98,26 +98,29 @@ void GC9A01ACUSTOMDisplay::update() {
     // Wire.beginTransmission(0x3C);
     // uint8_t err = Wire.endTransmission();
     // ESP_LOGD(TAG, "I2C bus active: endTransmission returned %d", err);
+      
   }
 
   // Logging that happens once after 30 update delay
   if (!diag_run && update_counter >= 30) {
-    for (int i = 0; i < LCD_1IN28_HEIGHT * LCD_1IN28_WIDTH; i++) {
-      this->framebuffer_[i] = 0xFFFF;
-    }
-    ESP_LOGD(TAG, "Frame buffer manually filled with WHITE (0xFFFF)");
+    LCD_1IN28_Clear(this->framebuffer_, GREEN);
 
-    LCD_1IN28_SetWindows(0, 0, LCD_1IN28_WIDTH, LCD_1IN28_HEIGHT);
-    ESP_LOGD(TAG, "Set window to full screen");
+  //   for (int i = 0; i < LCD_1IN28_HEIGHT * LCD_1IN28_WIDTH; i++) {
+  //     this->framebuffer_[i] = 0xFFFF;
+  //   }
+  //   ESP_LOGD(TAG, "Frame buffer manually filled with WHITE (0xFFFF)");
 
-    DEV_Digital_Write(LCD_DC_PIN, 1);
-    ESP_LOGD(TAG, "LCD_DC set to data mode (1)");
+  //   LCD_1IN28_SetWindows(0, 0, LCD_1IN28_WIDTH, LCD_1IN28_HEIGHT);
+  //   ESP_LOGD(TAG, "Set window to full screen");
 
-    int y = 0;
-    DEV_SPI_Write_nByte((uint8_t *) &this->framebuffer_[y * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
-    ESP_LOGD(TAG, "Transmitted scanline %d", y);
+  //   DEV_Digital_Write(LCD_DC_PIN, 1);
+  //   ESP_LOGD(TAG, "LCD_DC set to data mode (1)");
 
-    diag_run = true;
+  //   int y = 0;
+  //   DEV_SPI_Write_nByte((uint8_t *) &this->framebuffer_[y * LCD_1IN28_WIDTH], LCD_1IN28_WIDTH * 2);
+  //   ESP_LOGD(TAG, "Transmitted scanline %d", y);
+
+  //   diag_run = true;
   }
 
   update_counter++;
