@@ -84,11 +84,15 @@ void GC9A01ACUSTOMDisplay::update() {
   static uint32_t update_counter = 0;
   static uint8_t color_index = 0;
 
-  if (update_counter % 5 == 0) {  // Every 5 seconds (assuming update_interval: 1s)
-    LCD_1IN28_Clear(this->framebuffer_, color_wheel[color_index]);
-    ESP_LOGD(TAG, "LCD cleared to color index %d (0x%04X)", color_index, color_wheel[color_index]);
-    color_index = (color_index + 1) % color_count;
-  }
+  // if (update_counter % 5 == 0) {  // Every 5 seconds (assuming update_interval: 1s)
+  //   LCD_1IN28_Clear(this->framebuffer_, color_wheel[color_index]);
+  //   // ESP_LOGD(TAG, "LCD cleared to color index %d (0x%04X)", color_index, color_wheel[color_index]);
+  //   color_index = (color_index + 1) % color_count;
+  // }
+
+  LCD_1IN28_Clear(this->framebuffer_, color_wheel[color_index]);
+  // ESP_LOGD(TAG, "LCD cleared to color index %d (0x%04X)", color_index, color_wheel[color_index]);
+  color_index = (color_index + 1) % color_count;
 
   update_counter++;
 }
