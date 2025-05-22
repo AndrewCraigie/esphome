@@ -279,4 +279,4 @@ async def to_code(config):
         prog_arr = cg.progmem_array(config[CONF_RAW_DATA_ID], rhs)
         cg.add(var.set_palette(prog_arr))
 
-    cg.add(var.invert_colors(config[CONF_INVERT_COLORS]))
+    # cg.add(var.invert_colors(config[CONF_INVERT_COLORS]))
