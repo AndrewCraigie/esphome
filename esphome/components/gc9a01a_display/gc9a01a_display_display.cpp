@@ -43,27 +43,27 @@ void GC9A01ADisplay::setup() {
   delay(20);   // Matches Arduino demo implementation
 
   this->init_lcd_(this->extra_init_sequence_.data());
-  switch (this->pixel_mode_) {
-    case PIXEL_MODE_16:
-      if (this->is_18bitdisplay_) {
-        this->command(GC9A01A_DISPLAY_PIXFMT);
-        this->data(0x55);
-        this->is_18bitdisplay_ = false;
-      }
-      break;
-    case PIXEL_MODE_18:
-      if (!this->is_18bitdisplay_) {
-        this->command(GC9A01A_DISPLAY_PIXFMT);
-        this->data(0x66);
-        this->is_18bitdisplay_ = true;
-      }
-      break;
-    default:
-      break;
-  }
+  // switch (this->pixel_mode_) {
+  //   case PIXEL_MODE_16:
+  //     if (this->is_18bitdisplay_) {
+  //       this->command(GC9A01A_DISPLAY_PIXFMT);
+  //       this->data(0x55);
+  //       this->is_18bitdisplay_ = false;
+  //     }
+  //     break;
+  //   case PIXEL_MODE_18:
+  //     if (!this->is_18bitdisplay_) {
+  //       this->command(GC9A01A_DISPLAY_PIXFMT);
+  //       this->data(0x66);
+  //       this->is_18bitdisplay_ = true;
+  //     }
+  //     break;
+  //   default:
+  //     break;
+  // }
 
-  this->set_madctl();
-  this->command(this->pre_invertcolors_ ? GC9A01A_DISPLAY_INVON : GC9A01A_DISPLAY_INVOFF);
+  // this->set_madctl();
+  // this->command(this->pre_invertcolors_ ? GC9A01A_DISPLAY_INVON : GC9A01A_DISPLAY_INVOFF);
   this->x_low_ = this->width_;
   this->y_low_ = this->height_;
   this->x_high_ = 0;
