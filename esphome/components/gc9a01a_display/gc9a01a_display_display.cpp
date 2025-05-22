@@ -33,7 +33,7 @@ void GC9A01ADisplay::set_madctl() {
 void GC9A01ADisplay::setup() {
   ESP_LOGD(TAG, "Setting up GC9A01A Display");  
 
-  
+
   this->setup_pins_();
   this->init_lcd_(this->init_sequence_);
 
@@ -68,12 +68,6 @@ void GC9A01ADisplay::setup() {
   this->y_low_ = this->height_;
   this->x_high_ = 0;
   this->y_high_ = 0;
-
-  if (!this->check_buffer_()) {
-    ESP_LOGE(TAG, "Display buffer allocation failed!");
-    this->mark_failed();
-    return; 
-  }
 
 }
 
