@@ -67,6 +67,13 @@ void GC9A01ADisplay::setup() {
   this->y_low_ = this->height_;
   this->x_high_ = 0;
   this->y_high_ = 0;
+
+  if (!this->check_buffer_()) {
+    ESP_LOGE(TAG, "Display buffer allocation failed!");
+    this->mark_failed();
+    return; 
+  }
+
 }
 
 void GC9A01ADisplay::alloc_buffer_() {
@@ -225,6 +232,11 @@ void GC9A01ADisplay::update() {
 }
 
 void GC9A01ADisplay::display_() {
+  if (this->buffer_ == nullptr) {
+    ESP_LOGE(TAG, "buffer_ is NULL in display_(). Lambda or buffer allocation likely missing.");
+    return;
+  }
+
   // check if something was displayed
   if ((this->x_high_ < this->x_low_) || (this->y_high_ < this->y_low_)) {
     return;

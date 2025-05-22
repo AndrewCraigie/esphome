@@ -214,6 +214,8 @@ async def to_code(config):
             config[CONF_LAMBDA], [(display.DisplayRef, "it")], return_type=cg.void
         )
         cg.add(var.set_writer(lambda_))
+        cg.add_global(cg.raw_statement('ESP_LOGD("display.py", "set_writer() called and buffer should be initialized.");'))
+
 
     if CONF_RESET_PIN in config:
         reset = await cg.gpio_pin_expression(config[CONF_RESET_PIN])
