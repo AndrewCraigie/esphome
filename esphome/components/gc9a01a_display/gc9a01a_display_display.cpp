@@ -33,6 +33,7 @@ void GC9A01ADisplay::set_madctl() {
 void GC9A01ADisplay::setup() {
   ESP_LOGD(TAG, "Setting up GC9A01A Display");  
 
+  
   this->setup_pins_();
   this->init_lcd_(this->init_sequence_);
 
