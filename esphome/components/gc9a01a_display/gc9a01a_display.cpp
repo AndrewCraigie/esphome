@@ -97,6 +97,28 @@ display::DisplayType GC9A01ADisplay::get_display_type() {
   return display::DisplayType::DISPLAY_TYPE_COLOR;
 }
 
+void GC9A01ADisplay::display() {
+  if (!this->is_ready_) return;
+  
+  // Set full screen address window
+  this->set_addr_window_(0, 0, GC9A01A_WIDTH - 1, GC9A01A_HEIGHT - 1);
+  
+  // Write the buffer to display
+  this->enable_();
+  this->dc_pin_->digital_write(true);
+  
+  for (int y = 0; y < GC9A01A_HEIGHT; y++) {
+    for (int x = 0; x < GC9A01A_WIDTH; x++) {
+      auto color = this->get_pixel_(x, y);
+      uint16_t color565 = this->color_to_565_(color);
+      this->write_byte(color565 >> 8);
+      this->write_byte(color565 & 0xFF);
+    }
+  }
+  
+  this->disable_();
+}
+
 void GC9A01ADisplay::init_display_() {
   ESP_LOGD(TAG, "Initializing GC9A01A display...");
   

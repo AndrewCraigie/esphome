@@ -1,13 +1,13 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import display, spi
+from esphome.components import display, spi, pins
 from esphome.const import (
     CONF_ID,
     CONF_LAMBDA,
     CONF_PAGES,
 )
 
-CODEOWNERS = ["@yourusername"]
+CODEOWNERS = ["@AndrewCraigie"]
 DEPENDENCIES = ["spi"]
 
 gc9a01a_ns = cg.esphome_ns.namespace("gc9a01a_display")
@@ -26,10 +26,9 @@ MODELS = {
 CONFIG_SCHEMA = cv.All(
     display.FULL_DISPLAY_SCHEMA.extend(
         {
-            cv.GenerateID(): cv.declare_id(GC9A01A),
-            cv.Required(CONF_DC_PIN): cv.All(cv.require_positive_int),
-            cv.Optional(CONF_RESET_PIN): cv.All(cv.require_positive_int),
-            cv.Optional(CONF_BACKLIGHT_PIN): cv.All(cv.require_positive_int),
+           cv.Required(CONF_DC_PIN): pins.gpio_output_pin_schema,
+            cv.Optional(CONF_RESET_PIN): pins.gpio_output_pin_schema,
+            cv.Optional(CONF_BACKLIGHT_PIN): pins.gpio_output_pin_schema,
         }
     )
     .extend(cv.polling_component_schema("5s"))

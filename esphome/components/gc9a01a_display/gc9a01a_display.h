@@ -53,6 +53,7 @@ class GC9A01ADisplay : public PollingComponent,
 
   // DisplayBuffer interface
   void fill(Color color) override;
+  void display() override;
   void draw_absolute_pixel_internal(int x, int y, Color color) override;
   int get_height_internal() override;
   int get_width_internal() override;
