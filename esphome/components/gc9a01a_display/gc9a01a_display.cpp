@@ -42,14 +42,20 @@ void GC9A01ADisplay::setup() {
   }
   
   this->is_ready_ = true;
-  ESP_LOGCONFIG(TAG, "GC9A01A display setup complete");
+  ESP_LOGI(TAG, "Display initialization complete - ready: %s", this->is_ready_ ? "true" : "false");
 }
 
 void GC9A01ADisplay::update() {
-  if (!this->is_ready_) return;
+  ESP_LOGD(TAG, "Update called - is_ready: %s", this->is_ready_ ? "true" : "false");
   
+  if (!this->is_ready_) {
+    ESP_LOGW(TAG, "Display not ready, skipping update");
+    return;
+  }
+  
+  ESP_LOGD(TAG, "Starting do_update_()");
   this->do_update_();
-  this->display();
+  ESP_LOGD(TAG, "Update cycle complete");
 }
 
 void GC9A01ADisplay::dump_config() {
@@ -66,11 +72,18 @@ float GC9A01ADisplay::get_setup_priority() const {
 }
 
 void GC9A01ADisplay::fill(Color color) {
+  ESP_LOGD(TAG, "Fill called with color R:%d G:%d B:%d, ready: %s", 
+           color.red, color.green, color.blue, this->is_ready_ ? "true" : "false");
+  
   if (!this->is_ready_) return;
   
   uint16_t color565 = this->color_to_565_(color);
+  ESP_LOGD(TAG, "Filling display with color565: 0x%04X", color565);
+  
   this->set_addr_window_(0, 0, GC9A01A_WIDTH - 1, GC9A01A_HEIGHT - 1);
   this->write_color_(color565, GC9A01A_WIDTH * GC9A01A_HEIGHT);
+  
+  ESP_LOGD(TAG, "Fill operation complete");
 }
 
 void GC9A01ADisplay::draw_absolute_pixel_internal(int x, int y, Color color) {
@@ -78,7 +91,10 @@ void GC9A01ADisplay::draw_absolute_pixel_internal(int x, int y, Color color) {
     return;
   }
   
-  if (!this->is_ready_) return;
+  if (!this->is_ready_) {
+    ESP_LOGW(TAG, "Display not ready for pixel draw");
+    return;
+  }
   
   uint16_t color565 = this->color_to_565_(color);
   this->set_addr_window_(x, y, x, y);
@@ -369,6 +385,7 @@ void GC9A01ADisplay::set_addr_window_(uint16_t x1, uint16_t y1, uint16_t x2, uin
 }
 
 void GC9A01ADisplay::write_command_(uint8_t cmd) {
+  ESP_LOGV(TAG, "Writing command: 0x%02X", cmd);
   this->enable_();
   this->dc_pin_->digital_write(false);
   this->write_byte(cmd);
@@ -376,6 +393,7 @@ void GC9A01ADisplay::write_command_(uint8_t cmd) {
 }
 
 void GC9A01ADisplay::write_data_(uint8_t data) {
+  ESP_LOGV(TAG, "Writing data: 0x%02X", data);
   this->enable_();
   this->dc_pin_->digital_write(true);
   this->write_byte(data);
