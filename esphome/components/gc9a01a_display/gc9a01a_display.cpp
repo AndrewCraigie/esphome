@@ -67,7 +67,7 @@ void GC9A01ADisplay::dump_config() {
 }
 
 float GC9A01ADisplay::get_setup_priority() const {
-  return setup_priority::PROCESSOR;
+  return setup_priority::HARDWARE;  // Match ILI9XXX pattern
 }
 
 void GC9A01ADisplay::fill(Color color) {
