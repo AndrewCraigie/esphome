@@ -64,7 +64,6 @@ void GC9A01ADisplay::dump_config() {
   LOG_PIN("  Reset Pin: ", this->reset_pin_);
   LOG_PIN("  Backlight Pin: ", this->backlight_pin_);
   ESP_LOGCONFIG(TAG, "  Width: %d, Height: %d", this->get_width_internal(), this->get_height_internal());
-  LOG_UPDATE_INTERVAL(this);
 }
 
 float GC9A01ADisplay::get_setup_priority() const {
