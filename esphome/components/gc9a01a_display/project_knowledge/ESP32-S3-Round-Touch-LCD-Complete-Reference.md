@@ -11,9 +11,47 @@ This document contains the complete working Arduino code for the Waveshare ESP32
 
 ## Hardware Pin Configuration
 
+### Internal Connections (Used by onboard components)
 - **LCD Pins:** DC=8, CS=9, CLK=10, MOSI=11, RST=14, BL=2
 - **Touch I2C:** SDA=6, SCL=7, RST=13, IRQ=5
 - **Battery ADC:** Pin 1
+
+### External Connector Pinout (Available for expansion)
+| Pin | Function | Type | Description |
+|-----|----------|------|-------------|
+| 1 | GND | Ground | Ground connection |
+| 2 | VSYS | Power | System power input |
+| 3 | RESET | System Control | System reset (active low) |
+| 4 | BOOT | System Control | Boot mode selection |
+| 5 | GND | Ground | Ground connection |
+| 6 | 3V3 | Power | 3.3V power output |
+| 7 | GPIO 15 | GPIO | General purpose I/O |
+| 8 | GPIO 16 | GPIO | General purpose I/O |
+| 9 | GPIO 17 | GPIO | General purpose I/O |
+| 10 | GPIO 18 | GPIO | General purpose I/O |
+| 11 | GPIO 21 | GPIO | General purpose I/O |
+| 12 | GPIO 33 | GPIO | General purpose I/O |
+
+### Pin Usage Summary
+#### Used GPIO Pins (Internal)
+- GPIO0: Boot button
+- GPIO1: Battery ADC
+- GPIO2: LCD Backlight
+- GPIO5: Touch Interrupt
+- GPIO6: I2C SDA (Touch + IMU)
+- GPIO7: I2C SCL (Touch + IMU)
+- GPIO8: LCD Data/Command
+- GPIO9: LCD Chip Select
+- GPIO10: LCD SPI Clock
+- GPIO11: LCD SPI MOSI
+- GPIO12: LCD SPI MISO
+- GPIO13: Touch Reset
+- GPIO14: LCD Reset
+- GPIO19: USB D-
+- GPIO20: USB D+
+
+#### Available GPIO Pins (External Connector)
+- GPIO15, GPIO16, GPIO17, GPIO18, GPIO21, GPIO33
 
 ## Project Structure
 

@@ -153,6 +153,27 @@ DEV_Delay_ms(120);            // Required stabilization delay
 - **Power Management:** Proper sleep/wake state handling
 
 ---
+## USB CDC Logging Incompatibility
+
+### Issue Identified
+The ESP32-S3 Touch LCD 1.28" device cannot use USB CDC for logging due to hardware architecture.
+
+### Root Cause
+- Device uses **CH343P USB-to-UART bridge chip** 
+- USB-C connector routes through CH343P to GPIO43/GPIO44 (UART)
+- ESP32-S3 native USB pins (GPIO19/GPIO20) are not connected to USB-C
+- USB CDC requires direct connection to GPIO19/GPIO20
+
+### Confirmed Solution
+- Use wifi logging or use standard UART logging via `printf()` statements
+- Hardware bridge handles USB-to-serial conversion automatically
+- **Do not enable USB CDC On Boot** - will conflict with CH343P bridge
+
+### Arduino Configuration Impact
+- **USB CDC On Boot:** Must remain **Disabled**
+- **USB Mode:** Uses external bridge (CH343P), not native USB CDC
+- Logging works through wifi logging or traditional UART method
+---
 
 ## 🏗️ Current Architecture
 
