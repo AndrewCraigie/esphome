@@ -71,6 +71,7 @@ class GC9A01ADisplay : public display::DisplayBuffer,
   GPIOPin *reset_pin_{nullptr};
   GPIOPin *backlight_pin_{nullptr};
   bool is_ready_{false};
+  uint32_t update_counter_{0};  // Counter to manage update intervals
 };
 
 }  // namespace gc9a01a_display
