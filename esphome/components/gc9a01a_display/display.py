@@ -26,7 +26,8 @@ MODELS = {
 CONFIG_SCHEMA = cv.All(
     display.FULL_DISPLAY_SCHEMA.extend(
         {
-           cv.Required(CONF_DC_PIN): pins.gpio_output_pin_schema,
+            cv.GenerateID(): cv.declare_id(GC9A01A),  # ← Add this line back
+            cv.Required(CONF_DC_PIN): pins.gpio_output_pin_schema,
             cv.Optional(CONF_RESET_PIN): pins.gpio_output_pin_schema,
             cv.Optional(CONF_BACKLIGHT_PIN): pins.gpio_output_pin_schema,
         }
