@@ -8,8 +8,6 @@
 namespace esphome {
 namespace gc9a01a_display {
 
-static const char *const TAG = "gc9a01a_display";
-
 // Display dimensions for GC9A01A (240x240 round display)
 static const uint16_t GC9A01A_WIDTH = 240;
 static const uint16_t GC9A01A_HEIGHT = 240;
