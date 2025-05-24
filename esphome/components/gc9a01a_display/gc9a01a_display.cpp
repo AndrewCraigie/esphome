@@ -68,18 +68,7 @@ void GC9A01ADisplay::update() {
     ESP_LOGI(TAG, "  Display Dimensions: %dx%d", this->get_width_internal(), this->get_height_internal());
     ESP_LOGI(TAG, "  Display Type: %d", (int) this->get_display_type());
 
-    ESP_LOGI(TAG, "Pin States:");
-    if (this->dc_pin_) {
-      ESP_LOGI(TAG, "  DC Pin: %s", this->dc_pin_->dump_summary().c_str());
-    }
-    if (this->reset_pin_) {
-      ESP_LOGI(TAG, "  Reset Pin: %s", this->reset_pin_->dump_summary().c_str());
-    }
-    if (this->backlight_pin_) {
-      ESP_LOGI(TAG, "  Backlight Pin: %s", this->backlight_pin_->dump_summary().c_str());
-    }
-
-    ESP_LOGI(TAG, "SPI Status:");
+    ESP_LOGI(TAG, "SPI Status: TODO implment SPI diagnostics");
     // Add SPI-related diagnostics here if needed
 
     ESP_LOGI(TAG, "=== End Diagnostic Report ===");
