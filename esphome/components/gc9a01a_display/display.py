@@ -40,8 +40,11 @@ CONFIG_SCHEMA = cv.All(
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
+    
+    # Register as SPI device first
     await spi.register_spi_device(var, config)
+    
+    # Register as display (this will also register as component)
     await display.register_display(var, config)
 
     dc = await cg.gpio_pin_expression(config[CONF_DC_PIN])
