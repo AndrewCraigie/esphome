@@ -9,12 +9,6 @@ static const char *const TAG = "gc9a01a_display";
 
 void GC9A01ADisplay::setup() {
   ESP_LOGCONFIG(TAG, "Setting up GC9A01A display...");
-
-   if (!this->parent_->is_ready()) {
-    ESP_LOGE(TAG, "SPI bus not ready");
-    this->mark_failed();
-    return;
-  }
   
   // Initialize pins
   this->spi_setup();
