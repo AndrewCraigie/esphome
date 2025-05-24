@@ -12,7 +12,7 @@ CODEOWNERS = ["@AndrewCraigie"]
 DEPENDENCIES = ["spi"]
 
 gc9a01a_ns = cg.esphome_ns.namespace("gc9a01a_display")
-GC9A01A = gc9a01a_ns.class_("GC9A01ADisplay", cg.PollingComponent, spi.SPIDevice, display.DisplayBuffer)
+GC9A01A = gc9a01a_ns.class_("GC9A01ADisplay", spi.SPIDevice, display.DisplayBuffer)
 
 CONF_DC_PIN = "dc_pin"
 CONF_RESET_PIN = "reset_pin"
@@ -33,7 +33,6 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_BACKLIGHT_PIN): pins.gpio_output_pin_schema,
         }
     )
-    .extend(cv.polling_component_schema("5s"))
     .extend(spi.spi_device_schema(cs_pin_required=False)),
     cv.has_at_most_one_key(CONF_PAGES, CONF_LAMBDA),
 )
@@ -43,7 +42,7 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await spi.register_spi_device(var, config)
-    # await display.register_display(var, config)
+    await display.register_display(var, config)
 
     dc = await cg.gpio_pin_expression(config[CONF_DC_PIN])
     cg.add(var.set_dc_pin(dc))

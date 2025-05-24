@@ -34,10 +34,10 @@ static const uint8_t GC9A01A_MADCTL_ML = 0x10;  // Vertical Refresh Order
 static const uint8_t GC9A01A_MADCTL_BGR = 0x08; // RGB-BGR Order
 static const uint8_t GC9A01A_MADCTL_MH = 0x04;  // Horizontal Refresh Order
 
-class GC9A01ADisplay : public PollingComponent,
+class GC9A01ADisplay : public display::DisplayBuffer,
                        public spi::SPIDevice<spi::BIT_ORDER_MSB_FIRST, spi::CLOCK_POLARITY_LOW,
-                                             spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_40MHZ>,
-                       public display::DisplayBuffer {
+                                             spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_40MHZ>
+                                             {
  public:
   void set_dc_pin(GPIOPin *dc_pin) { this->dc_pin_ = dc_pin; }
   void set_reset_pin(GPIOPin *reset_pin) { this->reset_pin_ = reset_pin; }
